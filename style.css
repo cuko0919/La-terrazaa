@@ -1,0 +1,205 @@
+/*
+ * --------------------------------------------
+ * 1. ESTILOS BASE (MOBILE FIRST - Móvil por Defecto)
+ * --------------------------------------------
+ * Reglas flexibles y apiladas para dispositivos pequeños.
+ */
+* {
+    position: relative;
+    max-width: 100%;
+    margin: 0;
+    /* Deja espacio para el menú fijo en móvil (aprox. 55px) */
+    padding-top: 55px; 
+}
+
+.head h1 {
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    font-size: 30px; /* Reducción para móvil */
+}
+
+/* Menú fijo y responsivo */
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: 15px 5px;
+    display: flex;
+    justify-content: space-around;
+    gap: 5px;
+    flex-wrap: wrap; 
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu a {
+    text-decoration: none;
+    color: black;
+    font-size: 14px; /* Reducción para móvil */
+}
+
+.contenedor {
+    position: relative;
+    width: 100%;
+    max-width: 1440px; 
+    margin: 0 auto;
+}
+
+.contenedor img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Texto superpuesto */
+.texto-superpuesto {
+    position: absolute;
+    top: 50%; /* Centrado en móvil */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%; 
+    padding: 10px;
+    color: white;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.texto-superpuesto h2 { font-size: 1.5rem; } 
+.texto-superpuesto p { font-size: 1rem; }    
+
+/* BLOQUE DE INFORMACIÓN (.info) - APILAMIENTO EN MÓVIL */
+.info {
+    position: relative;
+    width: 100%;
+    max-width: 1440px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column; /* Apila imagen y párrafo */
+    align-items: center; 
+}
+
+.info img {
+    width: 90%; 
+    max-width: 600px;
+    margin: 20px auto;
+    border-radius: 20px;
+}
+
+.info p {
+    /* POSICIÓN ESTÁTICA PARA MÓVIL (DEBAJO DE IMAGEN) */
+    position: static;
+    transform: none; 
+    width: 90%; 
+    margin: 20px auto; 
+    color: white;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 18px; 
+}
+
+.lomejor { font-size: 25px; text-align: center; } 
+
+/* SLIDER - SCROLL HORIZONTAL EN MÓVIL */
+.slider-box {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll; 
+    padding: 20px 0;
+}
+
+.elemento {
+    flex: 0 0 auto;
+    width: 80vw; /* 80% del ancho de la pantalla */
+    margin: 0 10px;
+    height: auto;
+}
+
+.elemento img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+}
+
+.elemento p {
+    font-size: 20px;
+}
+
+@media (min-width: 1200px) {
+    
+    /* ... (Restauración de estilos generales y tipografía) ... */
+    
+    .head h1 { font-size: 50px; margin: 20px; padding: 20px; }
+    .menu { padding: 15px; gap: 20px; word-spacing: 20px; flex-wrap: nowrap; justify-content: center; }
+    .menu a { font-size: 20px; }
+    .texto-superpuesto { top: 30%; padding: 20px; width: auto; }
+    .texto-superpuesto h2 { font-size: 2rem; }
+    .texto-superpuesto p { font-size: 1.2rem; }
+    .lomejor { font-size: 30px; }
+
+
+    /* 🔑 SOLUCIÓN CLAVE: Bloque .info (Restauración del Diseño Ordenado) */
+
+    .info {
+        /* 1. Desactivamos el display: flex de móvil */
+        display: block; 
+        position: relative;
+        /* 2. Limpiamos los floats para que el contenedor abarque todo y empuje el contenido posterior */
+        overflow: hidden; 
+        /* Usar overflow: hidden es un hack común para limpiar floats */
+    }
+
+    .info img {
+        /* REGLAS ORIGINALES: Ancho fijo */
+        width: 600px;
+        margin: 10px;
+        display: block;
+        margin: 0 auto;
+        /* Hacemos que la imagen flote para que el párrafo se envuelva a su lado */
+    }
+
+    .info p {
+        /* ¡IMPORTANTE! Eliminamos position: absolute; para que el texto NO se superponga */
+        /* Si el texto debe ENVOLVER la imagen, debe ser POSICIÓN ESTÁTICA */
+        position: static;
+        /* Reset de todas las transformaciones y posiciones absolutas de móvil */
+        transform: none; 
+        top: auto;
+        left: auto;
+        
+        /* Ajustamos el margen para que el texto no toque la imagen */
+        margin: 20px;
+        padding: 20px;
+        font-size: 20px;
+        
+        /* Le damos el 100% de ancho disponible restante, después de la imagen flotante */
+        width: auto; 
+        
+        /* El fondo negro original solo funciona bien si el texto es absoluto */
+        background-color: transparent; 
+        color: black; 
+        /* Si deseas que se vea con el fondo semi-transparente como antes, DEBES volver a la posición absoluta. 
+           Si lo quieres ORDENADO, debes usar la posición estática como aquí. */
+    }
+    
+    /* RESTAURACIÓN DEL SLIDER */
+    .slider-box {
+        overflow: visible;
+        justify-content: center;
+        flex-wrap: nowrap;
+        /* IMPORTANTE: Agrega un margen superior para separarlo del contenido de .info */
+        margin-top: 50px; 
+    }
+
+    .elemento {
+        flex: 1 0 auto;
+        margin: 0 50px;
+        width: 500px; 
+        height: 500px;
+    }
+}
