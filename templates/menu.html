@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="stylesheet" href="stylemenu.css">
+</head>
+<body>
+      <header class="head">
+        <menu class="menu">
+        <a href="index.html">Nosotros</a>
+        <a href="reseñas">Reseñas</a>
+        <a href="nosotros">Nosotros</a>
+        </menu>
+    </header>
+
+    <div class="img">
+    <a href="img/Menu vertical para restaurante creativo negro.jpg" target="_blank">
+        <img src="img/Menu vertical para restaurante creativo negro.jpg" alt="Menú del restaurante">
+    </a>
+</div>
+
+<div class="chatbot">
+    <title>Chatbot de Pedidos (Terraza)</title>
+    <style>
+        /* Estilos básicos para el chat */
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+        #chat-container { max-width: 600px; margin: 0 auto; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 8px; }
+        #chat-box { height: 400px; overflow-y: scroll; padding: 15px; border-bottom: 1px solid #ddd; }
+        .message { margin-bottom: 10px; padding: 8px 12px; border-radius: 15px; max-width: 80%; }
+        .user-message { background-color: #dcf8c6; margin-left: auto; text-align: right; }
+        .bot-message { background-color: #f1f0f0; margin-right: auto; text-align: left; }
+        #input-container { display: flex; padding: 15px; }
+        #user-input { flex-grow: 1; padding: 10px; border: 1px solid #ddd; border-radius: 20px; margin-right: 10px; }
+        #send-button { background-color: #4CAF50; color: white; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-box">
+            <div class="message bot-message">¡Hola! Soy el chatbot de TERRAZA. 👋 ¡Bienvenido! Escribe "menu" para empezar a ordenar.</div>
+        </div>
+        <div id="input-container">
+            <input type="text" id="user-input" placeholder="Escribe tu pedido...">
+            <button id="send-button">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
+
+    // ** LÍNEA CRUCIAL: URL PÚBLICA DE RENDER **
+    const RENDER_API_URL = 'https://la-terrazaa-xrri.onrender.com/chat'; 
+
+    // Función para agregar mensajes al chat
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}-message`;
+        messageDiv.innerHTML = text.replace(/\n/g, '<br>'); 
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Función para enviar la solicitud al servidor de Render
+    async function sendMessage() {
+        const message = userInput.value.trim();
+        if (message === "") return;
+
+        // 1. Mostrar el mensaje del usuario
+        addMessage(message, 'user');
+        userInput.value = '';
+        
+        try {
+            // 2. Enviar datos a la URL pública de Render
+            const response = await fetch(RENDER_API_URL, { // <-- ¡USA LA URL DE RENDER!
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ mensaje: message })
+            });
+
+            // Si la respuesta no es 200 OK, lanzamos un error
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
+            }
+
+            // 3. Obtener la respuesta JSON
+            const data = await response.json();
+            
+            // 4. Mostrar la respuesta del bot
+            addMessage(data.respuesta, 'bot');
+            
+            console.log('Pedido Actual:', data.pedido_actual);
+
+        } catch (error) {
+            console.error('Error al comunicarse con el servidor:', error);
+            // Mensaje de error útil para el usuario final
+            addMessage('Lo siento, el servidor de pedidos no está disponible en este momento. Intenta de nuevo más tarde.', 'bot');
+        }
+    }
+
+    // Eventos para enviar el mensaje (botón y tecla Enter)
+    sendButton.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+</script>
+</div>
+    
+    
+</body>
+</html>
