@@ -1,0 +1,53 @@
+/* Corregimos el selector global para que no afecte el body */
+/* * {
+ * position: relative;
+ * max-width: 100%;
+ * margin: 0;
+ * padding-top: 55px; <--- QUITAMOS ESTO DEL SELECTOR GLOBAL
+ * } 
+*/
+* {
+    position: relative;
+    max-width: 100%;
+    margin: 0;
+    /* Quitamos el padding global */
+}
+
+/* * NUEVA REGLA: Aplicamos el margen solo al <body> o a un contenedor 
+ * principal para empujar el contenido debajo del menú fijo.
+ * Esto es crucial para eliminar el scroll innecesario.
+ */
+body {
+    padding-top: 55px; /* Altura de tu menú (aprox. 55px) */
+    margin: 0;
+}
+
+/* Menú fijo y responsivo */
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: 5px 5px;
+    display: flex;
+    justify-content: space-around;
+    gap: 5px;
+    flex-wrap: wrap; 
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu a {
+    text-decoration: none;
+    color: black;
+    font-size: 14px; 
+}
+
+/* Contenedor de la imagen */
+.img {
+    width: 100%;
+    /* Aseguramos que no haya margen extra que cause scroll */
+    margin: 0; 
+    padding: 0;
+}
