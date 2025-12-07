@@ -1,17 +1,22 @@
-# app.py
+# --- app.py: Código Unificado y con CORS ---
+
+# 1. Importaciones necesarias (incluyendo CORS)
 from flask import Flask, request, jsonify, render_template
 from menu_logic import MENU, mostrar_menu, encontrar_items_y_cantidad 
+from flask_cors import CORS
 
 app = Flask(__name__)
+# 2. Inicialización de CORS: Vital para permitir la conexión desde GitHub Pages
+CORS(app) 
 
-# --- Simulación del Estado de la Conversación (Mala práctica para apps reales, buena para demo simple) ---
-# Usaremos un diccionario simple para guardar el estado del pedido, simulando un único usuario.
+# --- Simulación del Estado de la Conversación ---
 PEDIDO_ACTUAL = {}
 TOTAL_ACTUAL = 0.0
 
 @app.route('/')
 def index():
-    """Muestra la interfaz HTML del chatbot."""
+    """Muestra la interfaz HTML del chatbot (menu.html)."""
+    # Flask buscará 'menu.html' dentro de la carpeta 'templates/'
     return render_template('menu.html')
 
 @app.route('/chat', methods=['POST'])
@@ -48,7 +53,7 @@ def handle_chat():
              TOTAL_ACTUAL = 0.0
              respuesta = resumen
         else:
-            respuesta = "Entendido. Esperamos verte pronto."
+             respuesta = "Entendido. Esperamos verte pronto."
     
     else:
         # 3. Procesar el mensaje de pedido usando la lógica de PLN
