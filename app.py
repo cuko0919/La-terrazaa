@@ -1,4 +1,4 @@
-# --- app.py: Código Limpio y Funcional para Render ---
+
 
 from flask import Flask, request, jsonify, render_template
 from menu_logic import MENU, mostrar_menu, encontrar_items_y_cantidad 
@@ -7,14 +7,12 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app) 
 
-# --- Simulación del Estado de la Conversación ---
 PEDIDO_ACTUAL = {}
 TOTAL_ACTUAL = 0.0
 
 @app.route('/')
 def index():
-    """Muestra la interfaz HTML del chatbot (menu.html)."""
-    # Flask buscará 'menu.html' dentro de la carpeta 'templates/'
+   
     return render_template('menu.html')
 
 @app.route('/chat', methods=['POST'])
